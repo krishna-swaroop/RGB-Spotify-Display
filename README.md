@@ -1,6 +1,6 @@
-# rpi-spotify-matrix-display
+# RGB-Spotify-Display and Player
 
-A Spotify display for 64x64 RGB LED matrices
+A Spotify display for 64x64 RGB LED matrices with RC522 RFID Scanner Integration.
 
 ![emulator screenshot](screenshot.png)
 
@@ -13,7 +13,7 @@ A Spotify display for 64x64 RGB LED matrices
 
 ## Setup
 1. Clone the repo
-   - `git clone --recurse-submodules https://github.com/kylejohnsonkj/rpi-spotify-matrix-display`
+   - `git clone --recurse-submodules https://github.com/krishna-swaroop/RGB-Spotify-Display`
 2. Enter the cloned directory
    - `cd rpi-spotify-matrix-display/`
 3. Install dependencies (within a [virtual env](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) is nice, but not required)
@@ -49,7 +49,12 @@ For Matrix configuration, see https://github.com/hzeller/rpi-rgb-led-matrix#chan
 
 For Spotify configuration, set the client_id and client_secret to your own. You may leave redirect_uri alone. I have also included a device_whitelist (disabled by default).
 
+## Adding New Custom Songs for RFID Tags
+TODO
+
 ## Acknowledgements
+Thanks to the repository by Kyle Johnson which was a starting point: `https://github.com/kylejohnsonkj/rpi-spotify-matrix-display`
+
 Thanks to allenslab for providing the original codebase for this project, [matrix-dashboard](https://github.com/allenslab/matrix-dashboard). You can find his original reddit post [here](https://www.reddit.com/r/3Dprinting/comments/ujyy4g/i_designed_and_3d_printed_a_led_matrix_dashboard/). This project is an adaption of his Spotify app for 64x64 matrices, while also packing some other improvements.
 
 Thanks to ty-porter for [his fork](https://github.com/ty-porter/matrix-dashboard) of matrix-dashboard from which my development branched from. The emulation support his [RGBMatrixEmulator project](https://github.com/ty-porter/RGBMatrixEmulator) added made it a breeze to develop efficiently.
