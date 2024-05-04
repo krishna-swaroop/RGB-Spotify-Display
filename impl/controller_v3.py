@@ -3,6 +3,25 @@ from PIL import Image
 
 from apps_v2 import spotify_player
 from modules import spotify_module
+from mfrc522 import SimpleMFRC522
+import threading
+
+# def read_rfid(RFIDReader, app_list):
+#     while True:
+#         try:
+#             id,text = RFIDReader.read()
+#             if id is not None:
+#                 print("ID: %s\nText: %s" % (id,text))
+#                 # if (id == (songs[''][0])):
+#                 if (id == 907276392724):
+#                     # modules['spotify'].start_playback(uris=['spotify:track:45vW6Apg3QwawKzBi03rgD'])
+#                     currentsong = app_list.spotify_module.getCurrentPlayback()
+#                     print(currentsong)
+#                 else:
+#                     print("No Song attached to this Tag")
+#         except Exception as e:
+#             print("Error:",e)
+#         time.sleep(1)
 
 
 def main():
@@ -38,9 +57,10 @@ def main():
         print("no config file found")
         sys.exit()
 
+    RFIDReader = SimpleMFRC522()
     # connect to Spotify and create display image
     modules = { 'spotify' : spotify_module.SpotifyModule(config) }
-    app_list = [ spotify_player.SpotifyScreen(config, modules, is_full_screen_always) ]
+    app_list = [ spotify_player.SpotifyScreen(config, modules, is_full_screen_always, RFIDReader)]
 
     # setup matrix
     options = RGBMatrixOptions()
@@ -57,7 +77,13 @@ def main():
     black_screen = Image.new("RGB", (canvas_width, canvas_height), (0,0,0))
     last_active_time = math.floor(time.time())
 
-    # generate image
+    
+
+    # rfid_thread = threading.Thread(target=read_rfid, args=(RFIDReader, app_list[0]))
+    # rfid_thread.daemon = True
+    # rfid_thread.start()
+
+    #generate image
     while(True):
         frame, is_playing = app_list[0].generate()
         current_time = math.floor(time.time())
@@ -71,8 +97,43 @@ def main():
             frame = black_screen
 
         matrix.SetImage(frame)
+        # try:
+        #     id, text = RFIDReader.read()
+        #     print("ID: %s\nText: %s" % (id,text))
+        # except:
+        #     print('No RFID Reader Detected')
+        
         time.sleep(0.08)
+    # import selectors
+    # # import sys
 
+    # selector = selectors.DefaultSelector()
+    # selector.register(sys.stdin, selectors.EVENT_READ)
+
+    # while True:
+    #     frame, is_playing = app_list[0].generate()
+    #     current_time = math.floor(time.time())
+
+    #     if frame is not None:
+    #         if is_playing:
+    #             last_active_time = math.floor(time.time())
+    #         elif current_time - last_active_time >= shutdown_delay:
+    #             frame = black_screen
+    #     else:
+    #         frame = black_screen
+
+    #     matrix.SetImage(frame)
+
+    #     # Check if there's input available
+    #     events = selector.select(timeout=0)
+    #     for key, mask in events:
+    #         if key.fileobj == sys.stdin:
+    #             # Input is available
+    #             user_input = input("Enter something: \n")
+    #             # Process the input if needed
+    #             print(user_input)
+
+    #     time.sleep(0.08)
 
 if __name__ == '__main__':
     try:

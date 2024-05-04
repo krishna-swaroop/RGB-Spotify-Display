@@ -51,6 +51,15 @@ class SpotifyModule:
         else:
             return True
 
+    def chooseNextSong(self, uri):
+        if self.invalid:
+            return
+        try:
+            self.sp.start_playback(uris=uri)
+        except Exception as e:
+            print(e)
+
+
     def getCurrentPlayback(self):
         # self.calls +=1
         # print("spotify fetches: " + str(self.calls))

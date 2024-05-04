@@ -3,7 +3,7 @@ from PIL import Image, ImageFont, ImageDraw
 from io import BytesIO
 
 class SpotifyScreen:
-    def __init__(self, config, modules, fullscreen):
+    def __init__(self, config, modules, fullscreen, RFIDReader):
         self.modules = modules
 
         self.font = ImageFont.truetype("fonts/tiny.otf", 5)
@@ -38,8 +38,16 @@ class SpotifyScreen:
         self.spotify_module = self.modules['spotify']
 
         self.response = None
-        self.thread = threading.Thread(target=self.getCurrentPlaybackAsync)
-        self.thread.start()
+        # self.currentsong =  None
+        self.reader = RFIDReader
+        self.nextresponse = None
+
+        self.thread1 = threading.Thread(target=self.getCurrentPlaybackAsync)
+        self.thread1.start()
+        self.thread2 = threading.Thread(target=self.changeSong)
+        self.thread2.start()
+
+        
 
     def getCurrentPlaybackAsync(self):
         # delay spotify fetches
@@ -47,6 +55,29 @@ class SpotifyScreen:
         while True:
             self.response = self.spotify_module.getCurrentPlayback()
             time.sleep(1)
+
+    def changeSong(self):
+        time.sleep(1)
+        while True:
+            try:
+                id,text = self.reader.read()
+                # self.currentsong = self.spotify_module.getCurrentPlayback()
+                # print(self.currentsong)
+                # uri=['spotify:track:45vW6Apg3QwawKzBi03rgD']
+                # self.nextresponse = self.spotify_module.chooseNextSong(uri)
+                if id is not None:
+                    print("ID: %s\nText: %s" % (id,text))
+                    # if (id == (songs[''][0])):
+                    if (id == 907276392724):
+                        print("Selected Song: Taylor Swift: Fortnight")
+                        uri=['spotify:track:6dODwocEuGzHAavXqTbwHv']
+                        self.nextresponse = self.spotify_module.chooseNextSong(uri)
+                    else:
+                        print("No Song attached to this Tag")
+            except Exception as e:
+                print("Error:",e)
+            time.sleep(1)
+
 
     def generate(self):
         if not self.spotify_module.queue.empty():
