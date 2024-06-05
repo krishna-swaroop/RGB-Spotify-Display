@@ -15,7 +15,7 @@ A Spotify display for 64x64 RGB LED matrices with RC522 RFID Scanner Integration
 1. Clone the repo
    - `git clone --recurse-submodules https://github.com/krishna-swaroop/RGB-Spotify-Display`
 2. Enter the cloned directory
-   - `cd rpi-spotify-matrix-display/`
+   - `cd RGB-Spotify-Display/`
 3. Install dependencies (within a [virtual env](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) is nice, but not required)
    - `python3 -m pip install -r requirements.txt`
 4. **Set your Client ID and Secret ID in the config.ini** 🙂
